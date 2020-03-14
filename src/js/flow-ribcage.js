@@ -26,6 +26,7 @@ var minRibVal = 4096;
 var minAirVal = 0.1;
 var maxAirVal = 0.0;
 var ribcageCanvas = document.querySelector('#ribcageChart');
+var respiratoryRateText = document.querySelector('#respiratoryRateText');
 
 async function onFlowRibcageButtonClick() {
 
@@ -94,7 +95,6 @@ function handleFlowRibcageNotifications(event) {
 
         ribcageValues.push(int16View[i]);
     }
-    // ribcageText.innerHTML = "Ribcage movement: " + int16View[0].toString();
     
     let ribcageRange = maxRibVal - minRibVal;
     var ribcagePlotValues = ribcageValues.map(function(element) {
@@ -103,18 +103,48 @@ function handleFlowRibcageNotifications(event) {
 
     // Smoothing data
     var ribcageValuesSmooth = [];
-    var n = 5;
+    var n = 5; // amount of smoothing
     for (var i = 1; i < ribcagePlotValues.length - 1; i++) {
-        // var mean = (ribcagePlotValues[i] + ribcagePlotValues[i-1] + ribcagePlotValues[i+1])/3.0;
         var mean = ribcagePlotValues.slice(i-n,i+2).reduce((a, b) => a + b, 0)/(2*n+1);
         ribcageValuesSmooth.push(mean);
     }
 
-    if (ribcagePlotValues.length > 455) {
+    peaks = findPeaks(ribcageValuesSmooth);
+    var maxTime = 450;
+
+    if (ribcagePlotValues.length > maxTime) {
         ribcageValues.splice(0, 7);
+        var respiratoryRate = 600*peaks.length/maxTime;
+        respiratoryRateText.innerHTML = "Respiratory rate: " + respiratoryRate.toFixed(1);
     }
-    // drawWaves(ribcagePlotValues, ribcageCanvas, 1, 6.0);
-    drawWaves(ribcageValuesSmooth, ribcageCanvas, 1, 6.0);
+    drawWaves(ribcageValuesSmooth, peaks, ribcageCanvas, 1, 6.0);
 
 }
 
+function findPeaks(x) {
+
+    var midpoints = [];
+    var left_edges = [];
+    var right_edges = [];
+
+    var i = 1;
+    while (i < x.length - 1) {
+        if (x[i-1] < x[i]) {
+            var i_ahead = i + 1;
+
+            while (i_ahead < x.length - 1 && x[i_ahead] == x[i]) {
+                i_ahead += 1;
+            }
+
+            if (x[i_ahead] < x[i]) {
+                left_edges.push(i);
+                right_edges.push(i_ahead - 1);
+                midpoints.push(Math.floor((i + i_ahead - 1)/2));
+                i = i_ahead;
+            }
+        }
+        i += 1;
+    }
+    
+    return midpoints;
+}

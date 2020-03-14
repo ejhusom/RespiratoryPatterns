@@ -1,5 +1,8 @@
 // Function for drawing graph of heart rate data in real time
-function drawWaves(valueArray, canvas, scale, xScale=30, adjust=0) {
+// TODO: Filter peaks by distance
+// TODO: Filter peaks by prominence
+
+function drawWaves(valueArray, peaks, canvas, scale, xScale=30, adjust=0) {
 
 
   requestAnimationFrame(() => {
@@ -16,17 +19,28 @@ function drawWaves(valueArray, canvas, scale, xScale=30, adjust=0) {
     context.beginPath();
     context.lineWidth = 3;
     context.lineJoin = 'round';
-    // context.shadowBlur = '1';
-    // context.shadowColor = '#333';
-    // context.shadowOffsetY = '1';
+
     for (var i = 0; i < Math.max(valueArray.length, max); i++) {
-      // var lineHeight = Math.round(valueArray[i] * canvas.height / scale);
-      var lineHeight = Math.round(valueArray[i + offset] * canvas.height / scale);
+      var lineHeight = Math.round(valueArray[i] * canvas.height / scale);
       if (i === 0) {
         context.moveTo(xScale * i, canvas.height - lineHeight);
       } else {
         context.lineTo(adjust + xScale * i, canvas.height - lineHeight);
       }
+      context.stroke();
+      // var j = 0;
+      // if (i = peaks[j]) {
+      //     // var barHeight = Math.round(valueArray[peaks[i] + offset] * canvas.height / scale);
+      //     var barHeight = canvas.height - lineHeight;
+      //     context.rect(xScale * i + adjust, canvas.height - barHeight, margin, Math.max(0, barHeight - margin));
+      //     context.stroke();
+      //     j += 1;
+      // }
+    }
+
+    for (var i = 0; i < peaks.length; i++) {
+      var barHeight = Math.round(valueArray[peaks[i]] * canvas.height / scale);
+      context.rect(xScale * peaks[i] + adjust, canvas.height - barHeight, margin, Math.max(0, barHeight - margin));
       context.stroke();
     }
   });
