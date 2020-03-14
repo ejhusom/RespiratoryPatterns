@@ -113,7 +113,7 @@ function handleFlowRibcageNotifications(event) {
     if (ribcagePlotValues.length > 455) {
         ribcageValues.splice(0, 7);
     }
-    drawWaves(ribcagePlotValues, ribcageCanvas, 1, 6.0);
+    // drawWaves(ribcagePlotValues, ribcageCanvas, 1, 6.0);
     drawWaves(ribcageValuesSmooth, ribcageCanvas, 1, 6.0);
 
 }
