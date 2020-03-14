@@ -3,6 +3,7 @@
 
 body {
     margin: auto;
+    font-family: monospace;
     padding: 1em;
 }
 
@@ -73,7 +74,7 @@ body {
   /* right: 0; */
   /* left: 0; */
   margin: 0 auto;
-  height: 11em;
+  height: 21em;
   padding: 1em 0 1em 0;
   /* width: 40em; */
   /* bottom: 0; */
