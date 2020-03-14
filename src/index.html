@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <link rel="stylesheet" href="css/style.css" type="text/css" />
+    </head>
+
+    <body>
+        <div id="controls">
+            <button id="connect-flow-ribcage">Connect FLOW</button>
+            <button id="stop-flow">Disconnect FLOW sensor</button>
+            <button id="connect-hr">Connect HR</button>
+            <button id="stop-hr">Disconnect HR</button>
+        </div>
+
+        <div class="container">
+            <div class="statusText" id="ribcageText">Ribcage movement</div>
+              <canvas class="chart" id="ribcageChart"></canvas>
+        </div>
+        </br>
+        <div class="container">
+            <div class="statusText" id="airflowText">Predicted airflow</div>
+              <canvas class="chart" id="airflowChart"></canvas>
+        </div>
+        </br>
+        <div class="container">
+            <div class="statusText" id="heartRateText">HR</div>
+              <canvas class="chart" id="heartRateChart"></canvas>
+        </div>
+
+        <script src="js/heartrate.js"></script>
+        <script src="js/chart.js"></script>
+        <script src="js/flow-ribcage.js"></script>
+
+        <script>
+            document.querySelector("#connect-hr").addEventListener("click", onHeartRateButtonClick);
+            document.querySelector("#stop-hr").addEventListener('click', onStopHeartRateClick);
+            document.querySelector("#connect-flow-ribcage").addEventListener("click", onFlowRibcageButtonClick);
+            document.querySelector("#stop-flow").addEventListener('click', onStopFlowRibcageClick);
+        </script>
+
+
+
+    </body>
+
+</html>
