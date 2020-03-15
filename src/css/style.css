@@ -3,7 +3,9 @@
 
 body {
     margin: auto;
-    font-family: monospace;
+    /* font-family: monospace; */
+    /* font-family: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Courier, monospace; */
+    font-family: sans-serif;
     padding: 1em;
 }
 
@@ -104,3 +106,6 @@ body {
   display: block;
 }
 
+.slider {
+  width: 30em;
+}

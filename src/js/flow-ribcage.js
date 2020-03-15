@@ -20,13 +20,32 @@ limitations under the License.
 
 var flowRibcageCharacteristic;
 var ribcageValues = [];
-var airflowValues = [];
-var maxRibVal = 0;
-var minRibVal = 4096;
-var minAirVal = 0.1;
-var maxAirVal = 0.0;
+// var maxRibVal = 0;
+// var minRibVal = 4096;
 var ribcageCanvas = document.querySelector('#ribcageChart');
 var respiratoryRateText = document.querySelector('#respiratoryRateText');
+var smoothingSlider = document.getElementById("smoothingSlider");
+var smoothingDiv = document.getElementById("smoothingValue")
+var prominenceSlider = document.getElementById("prominenceSlider");
+var prominenceDiv = document.getElementById("prominenceValue")
+var distanceSlider = document.getElementById("distanceSlider");
+var distanceDiv = document.getElementById("distanceValue")
+var s = 5; // smooting
+var p = 0.05; // prominence
+var d = 5; // distance
+
+smoothingSlider.onchange = function() {
+    smoothingDiv.innerHTML = this.value;
+    s = this.value;
+}
+prominenceSlider.onchange = function() {
+    prominenceDiv.innerHTML = this.value;
+    p = this.value;
+}
+distanceSlider.onchange = function() {
+    distanceDiv.innerHTML = this.value;
+    d = this.value;
+}
 
 async function onFlowRibcageButtonClick() {
 
@@ -86,39 +105,49 @@ function handleFlowRibcageNotifications(event) {
 
         let v = int16View[i];
 
-        if (v > maxRibVal) {
-            maxRibVal = v;
-        }
-        if (v < minRibVal) {
-            minRibVal = v;
-        }
+        // if (v > maxRibVal) {
+        //     maxRibVal = v;
+        // }
+        // if (v < minRibVal) {
+        //     minRibVal = v;
+        // }
 
         ribcageValues.push(int16View[i]);
     }
     
+    // Normalize data
+    var minRibVal = Math.min.apply(null, ribcageValues);
+    var maxRibVal = Math.max.apply(null, ribcageValues);
     let ribcageRange = maxRibVal - minRibVal;
-    var ribcagePlotValues = ribcageValues.map(function(element) {
+    var ribcageValuesNorm = ribcageValues.map(function(element) {
         return (element - minRibVal)/ribcageRange;
     });
 
     // Smoothing data
     var ribcageValuesSmooth = [];
-    var n = 5; // amount of smoothing
-    for (var i = 1; i < ribcagePlotValues.length - 1; i++) {
-        var mean = ribcagePlotValues.slice(i-n,i+2).reduce((a, b) => a + b, 0)/(2*n+1);
+    for (var i = 1; i < ribcageValuesNorm.length - 1; i++) {
+        var mean = ribcageValuesNorm.slice(i-s,i+2).reduce((a, b) => a + b, 0)/(2*s+1);
         ribcageValuesSmooth.push(mean);
     }
 
-    peaks = findPeaks(ribcageValuesSmooth);
-    var maxTime = 450;
 
-    if (ribcagePlotValues.length > maxTime) {
+    // Find peaks in data
+    var peaks = findPeaks(ribcageValuesSmooth);
+    peaks = selectByPeakProminence(ribcageValuesSmooth, peaks, 5, p);
+    // var priority = [];
+    // for (var i = 0; i < peaks.length; i++) {
+    //     priority.push(ribcageValuesSmooth[peaks[i]]);
+    // }
+    // peaks = selectByPeakDistance(peaks, priority, d);
+    
+    // Plot and display data
+    var maxTime = 450;
+    if (ribcageValues.length > maxTime) {
         ribcageValues.splice(0, 7);
         var respiratoryRate = 600*peaks.length/maxTime;
-        respiratoryRateText.innerHTML = "Respiratory rate: " + respiratoryRate.toFixed(1);
+        respiratoryRateText.innerHTML = "Respiratory rate: " + respiratoryRate.toFixed(1) + " breaths/minute.";
     }
     drawWaves(ribcageValuesSmooth, peaks, ribcageCanvas, 1, 6.0);
-
 }
 
 function findPeaks(x) {
@@ -147,4 +176,147 @@ function findPeaks(x) {
     }
     
     return midpoints;
+}
+
+function selectByPeakProminence(x, peaks, wlen, prominence) {
+
+    var prominences = [];
+    var left_bases = [];
+    var right_bases = [];
+
+    for (var i = 0; i < peaks.length; i++) {
+        prominences.push(0);    
+        left_bases.push(0);    
+        right_bases.push(0);    
+    }
+    
+    for (var peak_nr = 0; peak_nr < peaks.length; peak_nr++) {
+        var peak = peaks[peak_nr];
+        var i_min = 0;
+        var i_max = x.length - 1;
+
+        if (2 <= wlen) {
+            i_min = Math.max((peak - wlen / 2).toFixed(0), i_min); 
+            i_max = Math.min((peak + wlen / 2).toFixed(0), i_max); 
+        }
+
+        var i = peak;
+        left_bases[peak_nr] = peak;
+        var left_min = x[peak];
+        while (i_min <= i && x[i] <= x[peak]) {
+            if (x[i] < left_min) {
+                left_min = x[i];
+                left_bases[peak_nr] = i;
+            }
+            i = i - 1;
+        }
+
+        i = peak;
+        right_bases[peak_nr] = peak;
+        var right_min = x[peak];
+        while (i <= i_max && x[i] <= x[peak]) {
+            if (x[i] < right_min) {
+                right_min = x[i];
+                right_bases[peak_nr] = i;
+            }
+            i = i + 1;
+        }
+
+        prominences[peak_nr] = x[peak] - Math.max(left_min, right_min);
+
+        if (prominences[peak_nr] == 0) {
+            console.log("Some peaks have prominence of 0.");
+        }
+
+    }
+
+
+    var result = [];
+
+    for (var i = 0; i < peaks.length; i++) {
+        if (prominences[i] >= p) {
+            result.push(peaks[i]);
+        }
+    }
+
+    return result;
+    
+}
+
+function selectByPeakDistance(peaks, priority, distance) {
+
+    var keep = [];
+    for (var i = 0; i < peaks.length; i++) {
+        keep.push(1);
+    }
+
+    var priority_to_position = argSort(priority);
+
+    for (var i = peaks.length-1; i > -1; i--) {
+        var j = priority_to_position[i];
+
+        if (keep[j] == 0) {
+            continue;
+        }
+
+        var k = j - 1;
+
+        while (0 <= k && (peaks[k] - peaks[j]) < distance) {
+            keep[k] = 0;
+            k = k + 1; 
+        }
+
+        k = j + 1;
+
+        while (k < peaks.length && peaks[k] - peaks[j] < distance) {
+            keep[k] = 0;
+            k = k + 1;
+        }
+        
+    }
+
+    var result = [];
+
+    for (var i = 0; i < peaks.length; i++) {
+        if (keep[i] == 1) {
+            result.push(peaks[i]);
+        }
+    }
+
+    return result;
+}
+
+
+function argSort(x) {
+    
+    var indeces = []
+
+    for (var i = 0; i < x.length; i++) {
+        indeces.push(i);
+    }
+
+    const result = indeces
+      .map((item, index) => [x[index], item]) // add the x to sort by
+      .sort(([count1], [count2]) => count1 - count2) // sort by the x data
+      .map(([, item]) => item); // extract the sorted items
+  
+    return result;
+}
+
+function indexOfMin(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var min = arr[0];
+    var minIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] < min) {
+            minIndex = i;
+            min = arr[i];
+        }
+    }
+
+    return minIndex;
 }
