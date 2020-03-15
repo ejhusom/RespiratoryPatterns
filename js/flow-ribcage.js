@@ -133,7 +133,7 @@ function handleFlowRibcageNotifications(event) {
 
     // Find peaks in data
     var peaks = findPeaks(ribcageValuesSmooth);
-    peaks = selectByPeakProminence(ribcageValuesSmooth, peaks, 5, p);
+    // peaks = selectByPeakProminence(ribcageValuesSmooth, peaks, 5, p);
     // var priority = [];
     // for (var i = 0; i < peaks.length; i++) {
     //     priority.push(ribcageValuesSmooth[peaks[i]]);
