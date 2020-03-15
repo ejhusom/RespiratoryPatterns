@@ -20,8 +20,8 @@ limitations under the License.
 
 var flowRibcageCharacteristic;
 var ribcageValues = [];
-// var maxRibVal = 0;
-// var minRibVal = 4096;
+var maxRibVal = 0;
+var minRibVal = 4096;
 var ribcageCanvas = document.querySelector('#ribcageChart');
 var respiratoryRateText = document.querySelector('#respiratoryRateText');
 var smoothingSlider = document.getElementById("smoothingSlider");
