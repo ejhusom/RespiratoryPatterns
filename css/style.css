@@ -16,7 +16,7 @@ body {
   /* right: 0; */
   /* left: 0; */
   margin: 0 auto;
-  height: 21em;
+  height: 18em;
   padding: 1em 0 1em 0;
   /* width: 40em; */
   /* bottom: 0; */
@@ -58,4 +58,11 @@ footer {
   padding: 0.5rem;
   text-align: center;
   font-size: 0.8rem;
+}
+
+div.instructions {
+  max-width: 45em;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: auto;
 }

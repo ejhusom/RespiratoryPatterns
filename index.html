@@ -10,13 +10,16 @@
     </head>
 
     <body>
+        <h1 id="respiratorypatterns">RespiratoryPatterns</h1>
+        <p>Scroll down for instructions.</p>
+
         <div id="controls">
             <button id="connect-flow-ribcage">Connect FLOW</button>
             <button id="stop-flow">Disconnect FLOW sensor</button>
         </div>
 
         <div class="container">
-            <div class="statusText" id="ribcageText">Respiratory pattern</div>
+            <!-- <div class="statusText" id="ribcageText">Respiratory pattern</div> -->
               <canvas class="chart" id="ribcageChart"></canvas>
         </div>
 
@@ -44,6 +47,40 @@
             document.querySelector("#stop-flow").addEventListener('click', onStopFlowRibcageClick);
         </script>
 
+        <hr>
+        <div class="instructions">
+            <h1>Instructions</h1>
+            <p>This application connects to a SweetZpot FLOW breathing sensor using Bluetooth Low Energy, and shows the respiratory rate of the user.</p>
+            <h2 id="requirements">Requirements</h2>
+            <p>Hardware:</p>
+            <ul>
+            <li><a href="https://www.sweetzpot.com/flow">SweetZpot FLOW breathing sensor</a> (<a href="https://www.facebook.com/sweetzpot">SweetZpot on Facebook</a>).</li>
+            </ul>
+            <figure>
+            <img src="img/flow.jpg" alt="" style="width:50%"/><figcaption>The SweetZpot FLOW sensor.</figcaption>
+            </figure>
+            <p>Software:</p>
+            <ul>
+            <li><a href="https://caniuse.com/#feat=web-bluetooth">Web Bluetooth supported browser</a>, for example <a href="https://www.google.com/chrome/">Google Chrome</a>.</li>
+            </ul>
+            <h2 id="usage">Usage</h2>
+            <ol type="1">
+            <li>Strap the FLOW sensor around your abdomen. The sensor may be worn on top of clothing.</li>
+            <li>Open <code>index.html</code> in your browser.</li>
+            <li>Click <strong>Connect FLOW</strong>.</li>
+            <li>Wait for the FLOW sensor to appear as “BreathZpot”. In some cases this may take up to 30 seconds. If it does not appear, this might indicate that the FLOW sensor needs a new battery.</li>
+            <li>Select the FLOW (BreathZpot) sensor when it appears, and click <strong>Pair</strong>.</li>
+            <li>After 3-8 seconds, the web app starts receiving data from the sensor, and the real time graph of the abdominal movement is shown.</li>
+            <li>The vertical bars shown in the plot are points where the app finds a peak in respiration, but this might be inaccurate do to individual variations. Adjust the <em>smoothing</em> and <em>peak prominence</em> to improve accuracy.</li>
+            <li>After 45 seconds, the respiratory rate is calculated from the signal.</li>
+            </ol>
+            <h3 id="troubleshooting">Troubleshooting</h3>
+            <p>If you experience trouble with connecting the sensor, or the web app does not visualize any data, you could try:</p>
+            <ul>
+            <li>Reload the page (<code>index.html</code>), and try to reconnect to sensor(s).</li>
+            <li>Open the JavaScript console in the browser (in Google Chrome: View -&gt; Developer -&gt; Javascript Console). Any error messages will appear here.</li>
+            </ul>
+        </div>
 
         <footer>
             Web app by <a href="https://github.com/ejhusom/">Erik Johannes Husom</a>. Source code on <a href="https://github.com/ejhusom/RespiratoryPatterns/">Github</a>.
