@@ -49,3 +49,13 @@ body {
 .slider {
   width: 30em;
 }
+
+footer {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin-top: 2rem;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+}
