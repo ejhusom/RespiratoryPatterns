@@ -9,6 +9,51 @@ body {
     padding: 1em;
 }
 
+#topheader {
+  position: fixed;
+  top: 0;
+}
+
+.header {
+  right: 0;
+  left: 0;
+  background-color: #588299;
+}
+
+#topheaderText {
+  display: inline-block;
+  padding-top: 0em;
+  padding-bottom: 0em;
+}
+
+h1 {
+  padding-left: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  color: #ffffff;
+}
+
+button {
+  display: inline-block;
+  /* width: 3em; */
+  /* margin: auto; */
+  margin: 0 1em 1em 1em;
+  padding: 0.9em 0.9em 0.9em 0.9em;
+  border-radius: 0px;
+  color:#000000;
+  background-color:#ffffff;
+  border-color: #000000;
+  /* border: none; */
+}
+
+button:hover {
+  color:#ffffff;
+  background-color:#000000;
+}
+
+/* #controls { */
+/*   padding-top: 2em; */
+/* } */
 
 .container {
   /* position: absolute; */
@@ -63,7 +108,19 @@ footer {
 
 div.instructions {
   max-width: 45em;
-    padding-left: 5%;
-    padding-right: 5%;
-    margin: auto;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin: auto;
+}
+
+img {
+  margin: auto;
+  max-width: 100%;
+  display: block;
+}
+
+figcaption {
+  padding: 0.5em 0em 2.5em 0em;
+  text-align: center;
+  font-size: 0.8em;
 }

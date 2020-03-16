@@ -38,14 +38,14 @@ smoothingSlider.onchange = function() {
     smoothingDiv.innerHTML = this.value;
     s = this.value;
 }
-prominenceSlider.onchange = function() {
-    prominenceDiv.innerHTML = this.value;
-    p = this.value;
-}
-distanceSlider.onchange = function() {
-    distanceDiv.innerHTML = this.value;
-    d = this.value;
-}
+// prominenceSlider.onchange = function() {
+//     prominenceDiv.innerHTML = this.value;
+//     p = this.value;
+// }
+// distanceSlider.onchange = function() {
+//     distanceDiv.innerHTML = this.value;
+//     d = this.value;
+// }
 
 async function onFlowRibcageButtonClick() {
 
