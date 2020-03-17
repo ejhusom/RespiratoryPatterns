@@ -4,21 +4,22 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Respiratory Patterns</title>
 
 
         <link rel="stylesheet" href="css/style.css" type="text/css" />
     </head>
 
     <body>
-        <div id="topheader" class="header">
-            <h1 id="topheaderText">RespiratoryPatterns</h1>
-        </div>
+        <header>
+            <h1>Respiratory Patterns</h1>
+            <nav>
+                <a href="#instructions">Instructions</a>
+                <a href="#demo">Demo of breathing patterns</a>
+            </nav>
+        </header>
 
-        <p>Scroll down for instructions.</p>
-
-
-        <br>
-        <br>
+        <!-- <hr> -->
         <!-- <div id="controls"> -->
             <button id="connect-flow-ribcage">Connect FLOW</button>
             <button id="stop-flow">Disconnect FLOW sensor</button>
@@ -29,10 +30,10 @@
               <canvas class="chart" id="ribcageChart"></canvas>
         </div>
 
-        <h2>Respiratory rate</h2>
+        <h3>Respiratory rate</h3>
         <div id="respiratoryRateText">Respiratory rate will be calculated after 45 seconds of sampled data.</div>
 
-        <h2>Smoothing</h2>
+        <h3>Smoothing</h3>
         <p>Adjust smoothing to improve accuracy of respiratory rate.</p>
         <input id="smoothingSlider" type="range" min="0" max="50" value="5" step="1" class="slider"> 
         <div id="smoothingValue">5</div>
@@ -54,14 +55,14 @@
         </script>
 
         <div class="header">
-            <h1>Instructions</h1>
+            <h2 id="instructions">Instructions</h2>
         </div>
         <div class="instructions">
 
             <p>This application connects to a SweetZpot FLOW breathing sensor using Bluetooth Low Energy, and shows the respiratory rate of the user.</p>
             <p>IMPORTANT: The tool is under development and can be sensitive to noisy signals. This usually results in overestimation of the repiratory rate.</p>
 
-            <h2 id="requirements">Requirements</h2>
+            <h3 id="requirements">Requirements</h3>
 
             <p>Software:</p>
 
@@ -80,7 +81,7 @@
             </figure>
 
 
-            <h2 id="usage">Usage</h2>
+            <h3 id="usage">Usage</h3>
 
             <img src="img/how-to-put-on-sensor.gif"/><figcaption>How to put on the sensor.</figcaption>
 
@@ -96,9 +97,8 @@
             </ol>
 
         
-            <img src="img/demo.gif"/><figcaption>Demonstration of the tool in action.</figcaption>
 
-            <h3 id="troubleshooting">Troubleshooting</h3>
+            <h4 id="troubleshooting">Troubleshooting</h4>
 
             <p>If you experience trouble with connecting the sensor, or the web app does not visualize any data, you could try on the following things:</p>
 
@@ -107,6 +107,15 @@
                 <li>Open the JavaScript console in the browser (in Google Chrome: View -&gt; Developer -&gt; Javascript Console). Any error messages will appear here.</li>
             </ul>
         </div>
+
+        
+        <div class="header">
+            <h2 id="demo">Demo of breathing patterns</h2>
+        </div>
+        <div class="demo">
+            <img src="img/demo.gif"/><figcaption>Demonstration of the tool in action.</figcaption>
+        </div>
+
 
         <footer>
             Web app by <a href="https://github.com/ejhusom/">Erik Johannes Husom</a>. Source code on <a href="https://github.com/ejhusom/RespiratoryPatterns/">Github</a>.
