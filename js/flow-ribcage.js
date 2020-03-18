@@ -103,6 +103,8 @@ function handleFlowRibcageNotifications(event) {
     // TextDecoder to process raw data bytes.
     for (let i = 0; i < 7; i++) {
 
+        socket.emit('message', timestamp + ',abdomen,' + int16View[i].toString() + ',' + (timestamp - 600 + i*100)); 
+
         let v = int16View[i];
 
         // if (v > maxRibVal) {
